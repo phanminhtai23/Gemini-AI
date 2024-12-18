@@ -13,7 +13,6 @@ function getBase64Url(file, callback) {
 }
 
 function sendMessage() {
-
     var input = document.getElementById('messageInput');
     var imageInput = document.getElementById('imageInput');
     var message = input.value;
@@ -21,39 +20,61 @@ function sendMessage() {
     var messageElement = document.createElement('div');
     messageElement.classList.add('message', 'sent');
 
-    // Include Text and Image
     if (imageInput.files.length > 0) {
-        var messageText = document.createElement('div');
-        messageText.textContent = message;
-        messageElement.appendChild(messageText);
-
         var file = imageInput.files[0];
+        var fileType = file.type;
 
+        if (fileType.startsWith('image/')) {
+            var messageText = document.createElement('div');
+            messageText.textContent = message;
+            messageElement.appendChild(messageText);
 
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var img = document.createElement('img');
-            img.src = e.target.result;
-            img.classList.add('sentImage');
-            img.style.maxWidth = '400px';
-            img.style.maxHeight = '400px';
-            messageElement.appendChild(img);
-            appendTimestamp(messageElement);
-            chatBox.appendChild(messageElement);
-            clearImage();
-        };
-        reader.readAsDataURL(file);
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('sentImage');
+                img.style.maxHeight = '400px';
+                messageElement.appendChild(img);
+                appendTimestamp(messageElement);
+                chatBox.appendChild(messageElement);
+                clearImage();
+            };
+            reader.readAsDataURL(file);
 
-        const formData = new FormData();
-        formData.append('text', message.trim());
-        formData.append('image', imageInput.files[0]);
-        fetchAPIGetTextAndImage(formData)
+            const formData = new FormData();
+            formData.append('text', message.trim());
+            formData.append('image', file);
+            fetchAPIGetTextAndImage(formData);
 
-        console.log("form", formData)
+            console.log('Message: text and image');
+        } else if (fileType.startsWith('application/') || fileType === "text/plain") {
+            var messageText = document.createElement('div');
+            messageText.textContent = message;
+            messageElement.appendChild(messageText);
 
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var doc = document.createElement('a');
+                doc.href = e.target.result;
+                doc.textContent = file.name;
+                doc.classList.add('sentDocument');
+                messageElement.appendChild(doc);
+                appendTimestamp(messageElement);
+                chatBox.appendChild(messageElement);
+                clearImage();
+            };
+            reader.readAsDataURL(file);
 
-        console.log('Message: text và image');
-    // Just Text
+            const formData = new FormData();
+            formData.append('text', message.trim());
+            formData.append('document', file);
+            fetchAPIGetTextAndDocument(formData);
+
+            console.log('Message: text and document');
+        } else {
+            alert('Unsupported file type!');
+        }
     } else if (message.trim() !== "") {
         var messageText = document.createElement('div');
         messageText.textContent = message;
@@ -63,33 +84,13 @@ function sendMessage() {
         chatBox.appendChild(messageElement);
 
         fetchAPIGetText(message.trim());
-
-    // Just Image
-    } else if (imageInput.files.length > 0) {
-        var file = imageInput.files[0];
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var img = document.createElement('img');
-            img.src = e.target.result;
-            img.classList.add('sentImage');
-            img.style.maxWidth = '400px';
-            img.style.maxHeight = '400px';
-            messageElement.appendChild(img);
-            appendTimestamp(messageElement);
-            chatBox.appendChild(messageElement);
-            clearImage();
-        };
-        reader.readAsDataURL(file);
-        console.log('Message: chỉ image');
     } else {
-        alert("Vui lòng nhập tin nhắn hoặc chọn ảnh!");
+        alert("Please enter a message or select a file!");
     }
 
     input.value = "";
     imageInput.value = "";
-    // Simulate receiving a response
-    // var responeText = fetchAPIGetText(message);
-
+    scrollToBottom();
 }
 function fetchAPIGetText(message) {
     // Send the message to the server API
@@ -103,7 +104,7 @@ function fetchAPIGetText(message) {
     .then(response => response.json())
     .then(data => {
         // Handle the response from the server
-        console.log('Success:', data.response);
+        // console.log('Success:', data.response);
         if (data) {
             receiveMessage(data.response);
         } else {
@@ -127,7 +128,7 @@ function fetchAPIGetTextAndImage(formData) {
     .then(response => response.json())
     .then(data => {
         // Handle the response from the server
-        console.log('Success:', data.response);
+        // console.log('Success:', data.response);
         if (data) {
             receiveMessage(data.response);
         } else {
@@ -139,6 +140,26 @@ function fetchAPIGetTextAndImage(formData) {
     });
 }
 
+function fetchAPIGetTextAndDocument(formData) {
+    // Send the message and document to the server API
+    fetch('/api/textAndDocument', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response from the server
+        // console.log('Success:', data.response);
+        if (data) {
+            receiveMessage(data.response);
+        } else {
+            receiveMessage("Có một chút lỗi, vui lòng mô tả rõ hơn nhe!!");
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
 function receiveMessage(message) {
     var chatBox = document.getElementById('chatBox');
@@ -151,6 +172,7 @@ function receiveMessage(message) {
 
     appendTimestamp(messageElement);
     chatBox.appendChild(messageElement);
+     scrollToBottom();
 }
 
     function previewImage(event) {
@@ -159,7 +181,7 @@ function receiveMessage(message) {
         preview.id = 'imagePreview';
         preview.style.maxWidth = '100px';
         preview.style.maxHeight = '100px';
-        preview.style.marginLeft = '10px';
+        preview.style.marginRight = '10px';
 
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -195,20 +217,7 @@ function appendTimestamp(messageElement) {
     messageElement.appendChild(timestamp);
 }
 
-// const eventSource = new EventSource('/api/text');
-//
-// eventSource.onmessage = function(event) {
-//     try {
-//         // Remove the "data: " prefix before parsing the JSON
-//         const jsonData = event.data.replace(/^data: /, '');
-//         const data = JSON.parse(jsonData);
-//         console.log(data.text);
-//         // Handle the received data here
-//     } catch (e) {
-//         console.error('Error parsing JSON:', e);
-//     }
-// };
-//
-// eventSource.onerror = function(event) {
-//     console.error('EventSource failed:', event);
-// };
+function scrollToBottom() {
+    var chatBox = document.getElementById('chatBox');
+    chatBox.scrollTop = chatBox.scrollHeight;
+}

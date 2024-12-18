@@ -8,13 +8,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<h1>Gemini AI</h1>
- <div class="chatBox" id="chatBox"></div>
+    <h1 class = "titile">Chat Gemini AI</h1>
+    <div class="chatBox" id="chatBox"></div>
     <div class="inputBox">
         <input type="text" id="messageInput" placeholder="Enter your message">
-        <input type="file" id="imageInput" accept="image/*" onchange="previewImage(event)">
-        <button onclick="sendMessage()">Send</button>
+
+
+        <div class="file-upload-container">
+ <label for="imageInput" class="custom-file-upload btn btn-secondary d-flex justify-content-center align-items-center">
+    Chọn tệp
+</label>
+            <input type="file" id="imageInput" accept="image/*,application/*,text/plain" onchange="previewImage(event)">
+        </div>
+        <button type="button" class="btn btn-primary pd-3" onclick="sendMessage()">Send</button>
     </div>
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
