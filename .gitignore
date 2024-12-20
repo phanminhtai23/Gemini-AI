@@ -5,3 +5,7 @@
 /documents
 /.idea
 /__pycache__
+/.prettierrc
+/node_modules
+/.vscode
+/API_file.py
