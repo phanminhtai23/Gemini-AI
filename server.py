@@ -41,14 +41,15 @@ def receive_text():
         data = request.get_json()
         if not data:
             return jsonify({'error': 'No JSON data received'}), 400
+
+        response_text = data.get('text', '')
+        
+        result = text_gen.generate_text(response_text)
+
+        return jsonify({'response': result})
     except Exception as e:
-        return jsonify({'error': 'Invalid JSON format'}), 400
-
-    response_text = data.get('text', '')
-    
-    result = text_gen.generate_text(response_text)
-
-    return jsonify({'response': result})
+        print("error /api/text", e)
+        return None
 
 # API stream the response to the client
 @app.route('/api/stream', methods=['GET'])
@@ -68,8 +69,8 @@ def receive_text_and_image():
         return jsonify({'response': result})
 
     except Exception as e:
-        print("error", e)
-        return jsonify({'error': str(e)}), 400
+        print("error /api/textAndImage", e)
+        return None
 
 # API text và document
 @app.route('/api/textAndDocument', methods=['POST'])
@@ -83,7 +84,8 @@ def receive_text_and_document():
         return jsonify({'response': result})
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 400
+        print("error /api/textAndDocument", e)
+        return  None
 
 
 if __name__ == '__main__':

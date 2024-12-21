@@ -1,6 +1,7 @@
 var globalText = '';
 var global_InforImage = '';
 var global_InforDocument = '';
+var timerId;
 
 const myWidget = cloudinary.createUploadWidget(
 	{
@@ -20,7 +21,7 @@ const myWidget = cloudinary.createUploadWidget(
 	},
 	(error, result) => {
 		if (!error && result && result.event === 'success') {
-			// console.log('Done! Here is the image info: ', result.info);
+			console.log('Done! Here is the image info: ', result.info);
 			previewImage(result);
 		}
 	},
@@ -51,6 +52,7 @@ function sendMessage() {
 
 	globalText = input.value.trim();
 
+	// tạo khung tin nhắn và thời gian để gửi vào khung chat
 	// Có gửi ảnh
 	if (global_InforImage !== '') {
 		var messageText = document.createElement('div');
@@ -66,6 +68,7 @@ function sendMessage() {
 
 		appendTimestamp(messageElement);
 		chatBox.appendChild(messageElement);
+		createElementWaitingMessage();
 
 		const formData = new FormData();
 		formData.append('text', globalText);
@@ -82,11 +85,14 @@ function sendMessage() {
 		doc.textContent =
 			global_InforDocument.original_filename +
 			'.' +
-			global_InforDocument.format;
+			global_InforDocument.secure_url.split('.').pop().toLowerCase();
 		doc.classList.add('sentDocument');
+		doc.style.textDecoration = 'underline';
+		doc.style.color = 'black';
 		messageElement.appendChild(doc);
 		appendTimestamp(messageElement);
 		chatBox.appendChild(messageElement);
+		createElementWaitingMessage();
 
 		const formData = new FormData();
 		formData.append('text', globalText);
@@ -104,6 +110,7 @@ function sendMessage() {
 
 		appendTimestamp(messageElement);
 		chatBox.appendChild(messageElement);
+		createElementWaitingMessage();
 
 		fetchAPIGetText(globalText);
 	} else {
@@ -127,7 +134,7 @@ function fetchAPIGetText(message) {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.response !== null) {
+			if (data.response) {
 				initializeSSE(data.response);
 			} else {
 				initializeSSE('Sever có vấn đề rồi bé yêu !!');
@@ -135,6 +142,7 @@ function fetchAPIGetText(message) {
 		})
 		.catch((error) => {
 			console.error('Error:', error);
+			initializeSSE('Sever có vấn đề rồi bé yêu, thử lại nha!!');
 		});
 }
 
@@ -150,7 +158,7 @@ function fetchAPIGetTextAndImage(formData) {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.response !== null) {
+			if (data.response) {
 				initializeSSE(data.response);
 			} else {
 				initializeSSE('Sever có vấn đề rồi bé yêu !!');
@@ -170,7 +178,7 @@ function fetchAPIGetTextAndDocument(formData) {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.response !== null) {
+			if (data.response) {
 				initializeSSE(data.response);
 			} else {
 				initializeSSE(
@@ -203,6 +211,8 @@ function initializeSSE(responseText) {
 	messageElement.querySelector('.timestamp').style.textAlign = 'left';
 	chatBox.appendChild(messageElement);
 
+	clearWaitingMessage();
+
 	eventSource.onmessage = function (event) {
 		const data = JSON.parse(event.data);
 		if (data.type === 'text') {
@@ -224,7 +234,7 @@ function initializeSSE(responseText) {
 
 // Function to preview image or document based on Cloudinary upload result
 function previewImage(result) {
-	var format = result.info.format.toLowerCase();
+	var format = result.info.secure_url.split('.').pop().toLowerCase();
 	var inputBox = document.querySelector('.inputBox');
 	var existingPreview = document.getElementById('filePreview');
 
@@ -247,8 +257,7 @@ function previewImage(result) {
 	} else if (checkFileType(format) === 'document') {
 		// File is a document
 		preview = document.createElement('div');
-		preview.textContent =
-			result.info.original_filename + '.' + result.info.format;
+		preview.textContent = result.info.original_filename + '.' + format;
 
 		global_InforDocument = result.info;
 	} else {
@@ -266,8 +275,68 @@ function previewImage(result) {
 function appendTimestamp(messageElement) {
 	var timestamp = document.createElement('div');
 	timestamp.classList.add('timestamp');
-	timestamp.textContent = new Date().toLocaleTimeString();
+	timestamp.textContent = new Date().toLocaleTimeString([], {
+		hour: '2-digit',
+		minute: '2-digit',
+	});
 	messageElement.appendChild(timestamp);
+}
+
+// hiệu ứng chờ phản hồi từ API
+function createElementWaitingMessage() {
+	var chatBox = document.getElementById('chatBox');
+
+	var messageElementWaiting = document.createElement('div');
+	messageElementWaiting.id = 'waitingMessage';
+	messageElementWaiting.classList.add('message', 'received');
+
+	// set stlye 3 chấm nhảy nhảy
+	const messageTextWaiting = document.createElement('div');
+	messageTextWaiting.className = 'typingIndicator';
+	for (let i = 0; i < 3; i++) {
+		const span = document.createElement('span');
+		messageTextWaiting.appendChild(span);
+	}
+
+	messageElementWaiting.appendChild(messageTextWaiting);
+	startTimer(messageElementWaiting);
+
+	chatBox.appendChild(messageElementWaiting);
+
+	// stopTimer();
+}
+
+// Hàm để chèn thời gian chạy từ 00:00 vào messageTextWaiting
+function startTimer(messageElementWaiting) {
+	var seconds = 0;
+	var milliseconds = 0;
+	var timesWait = document.createElement('div');
+	timesWait.classList.add('timesWait');
+	messageElementWaiting.appendChild(timesWait);
+
+	function updateTimer() {
+		milliseconds += 100; // Tăng mili giây mỗi 100ms
+		if (milliseconds >= 1000) {
+			milliseconds = 0;
+			seconds++;
+		}
+
+		var formattedTime =
+			seconds + '.' + Math.floor(milliseconds / 100) + 's';
+
+		timesWait.textContent = formattedTime;
+	}
+
+	// Cập nhật thời gian mỗi 100ms
+	timerId = setInterval(updateTimer, 100);
+}
+
+// Đừng đếm thời gian đợi phản hồi
+function stopTimer() {
+	if (timerId) {
+		clearInterval(timerId);
+		timerId = null; // Đặt lại ID của bộ đếm thời gian
+	}
 }
 
 // Lăn màn hình xuống cuối cùng
@@ -292,6 +361,20 @@ function clearGlobalLink() {
 	global_InforDocument = '';
 	var input = document.getElementById('messageInput');
 	input.value = '';
+}
+
+// Xóa tin nhắn chờ
+function clearWaitingMessage() {
+	stopTimer();
+	var chatBox = document.getElementById('chatBox');
+	var waitingMessage = document.getElementById('waitingMessage');
+	var typingIndicator = document.getElementsByClassName('typingIndicator');
+	if (waitingMessage) {
+		chatBox.removeChild(waitingMessage);
+	} else if (typingIndicator) {
+		chatBox.removeChild(typingIndicator);
+	}
+
 }
 
 /**

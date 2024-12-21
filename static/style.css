@@ -5,6 +5,7 @@ body {
 	height: 100vh;
 	margin: 0;
 	flex-direction: column;
+	font-family: 'Google Sans Mono', 'Courier New', Courier, monospace;
 }
 
 .chatBox {
@@ -57,6 +58,7 @@ body {
 	border-radius: 15px;
 	max-width: 80%;
 	position: relative;
+	font-size: 16px;
 }
 
 .sent {
@@ -78,6 +80,14 @@ body {
 	color: #212529;
 	margin-top: 5px;
 	text-align: right;
+}
+
+.timesWait {
+	font-size: 12px;
+	color: #212529;
+	margin-top: 5px;
+	text-align: right;
+	font-weight: 400;
 }
 
 .sentImage {
@@ -127,6 +137,50 @@ body {
 
 #send {
 	padding: 0 31px;
+}
+
+.typingIndicator {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px; /* Khoảng cách giữa các chấm */
+}
+
+.typingIndicator span {
+	width: 10px;
+	height: 10px;
+	background-color: #555555; /* Màu chấm, giống Messenger */
+	border-radius: 50%; /* Tạo hình tròn */
+	animation: bounce 1.5s infinite; /* Hiệu ứng nhảy */
+}
+
+.typingIndicator span:nth-child(1) {
+	animation-delay: 0s;
+}
+
+.typingIndicator span:nth-child(2) {
+	animation-delay: 0.2s;
+}
+
+.typingIndicator span:nth-child(3) {
+	animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+	0%,
+	80%,
+	100% {
+		transform: scale(0);
+		opacity: 0.5; /* Hiệu ứng mờ nhẹ khi thu nhỏ */
+	}
+	40% {
+		transform: scale(1);
+		opacity: 1; /* Hiệu ứng rõ nét khi phóng to */
+	}
+}
+
+#filePreview {
+	max-width: 100px;
 }
 
 @media (max-width: 600px) {
