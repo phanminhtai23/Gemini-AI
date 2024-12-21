@@ -21,19 +21,20 @@ app = Flask(__name__)
 
 
 @app.get('/')
+# route home
 def home():
     return render_template('index.html', content="Hello World!")
 
-
+# Stream the response to the client
 def event_stream(response_text):
-    # result = text_gen.generate_text(response_text)
-    # print("response_text", response_text)
+    print("response from API:", response_text)
     words = response_text.split()
     for chunk in words:
         yield f"data: {json.dumps({'type': 'text', 'content': chunk + ' '})}\n\n"
         time.sleep(SPEED_GENERATE)  # sleep to slow down the real-time display
     yield f"data: {json.dumps({'type': 'end'})}\n\n"
 
+# API to receive text and return the generated text
 @app.route('/api/text', methods=['POST'])
 def receive_text():
     try:
@@ -45,35 +46,32 @@ def receive_text():
 
     response_text = data.get('text', '')
     
-    TEXT_GENERATE = text_gen.generate_text(response_text)
+    result = text_gen.generate_text(response_text)
 
-    return jsonify({'response': TEXT_GENERATE})
+    return jsonify({'response': result})
 
-
+# API stream the response to the client
 @app.route('/api/stream', methods=['GET'])
 def stream():
     response_text = request.args.get('text', '')
-    print("response_text", response_text)
     return Response(event_stream(response_text), mimetype="text/event-stream")
 
-
+# API text và image
 @app.route('/api/textAndImage', methods=['POST'])
 def receive_text_and_image():
     try:
         input_text = request.form.get('text', '')
         input_linkImage = request.form.get('image', '')
 
-        # input_linkImage.save(filepath)
-        print("input_text", input_text, input_linkImage)
         result = text_gen.generate_image(input_text, input_linkImage)
 
-        # print("result", result)
         return jsonify({'response': result})
 
     except Exception as e:
+        print("error", e)
         return jsonify({'error': str(e)}), 400
 
-
+# API text và document
 @app.route('/api/textAndDocument', methods=['POST'])
 def receive_text_and_document():
     try:
@@ -81,7 +79,7 @@ def receive_text_and_document():
         input_LinkDocument = request.form.get('document', '')
 
         result = text_gen.generate_document(input_text, input_LinkDocument)
-
+            
         return jsonify({'response': result})
 
     except Exception as e:

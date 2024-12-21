@@ -20,11 +20,8 @@ const myWidget = cloudinary.createUploadWidget(
 	},
 	(error, result) => {
 		if (!error && result && result.event === 'success') {
-			console.log('Done! Here is the image info: ', result.info);
+			// console.log('Done! Here is the image info: ', result.info);
 			previewImage(result);
-			//   document
-			//     .getElementById("uploadedimage")
-			//     .setAttribute("src", result.info.secure_url);
 		}
 	},
 );
@@ -45,23 +42,22 @@ document
 		}
 	});
 
+// Nhấn nút gửi
 function sendMessage() {
 	var input = document.getElementById('messageInput');
 	var chatBox = document.getElementById('chatBox');
 	var messageElement = document.createElement('div');
 	messageElement.classList.add('message', 'sent');
 
-	var imageInput = document.getElementById('filePreview');
-
 	globalText = input.value.trim();
 
-	console.log('global', globalText, global_InforImage, global_InforDocument);
-
+	// Có gửi ảnh
 	if (global_InforImage !== '') {
 		var messageText = document.createElement('div');
 		messageText.textContent = globalText;
 		messageElement.appendChild(messageText);
 
+		// Tạo ảnh mới và thêm vào messageElement
 		var img = document.createElement('img');
 		img.src = global_InforImage.secure_url;
 		img.classList.add('sentImage');
@@ -75,7 +71,7 @@ function sendMessage() {
 		formData.append('text', globalText);
 		formData.append('image', global_InforImage.secure_url);
 		fetchAPIGetTextAndImage(formData);
-		console.log('Vao anhr');
+		// Có gửi tài liệu
 	} else if (global_InforDocument !== '') {
 		var messageText = document.createElement('div');
 		messageText.textContent = globalText;
@@ -96,15 +92,12 @@ function sendMessage() {
 		formData.append('text', globalText);
 		formData.append('document', global_InforDocument.secure_url);
 		fetchAPIGetTextAndDocument(formData);
-
-		console.log('Vao document');
+		// Chỉ gửi text
 	} else if (
 		globalText !== '' &&
 		global_InforImage === '' &&
 		global_InforDocument === ''
 	) {
-		console.log('Vao texxt');
-
 		var messageText = document.createElement('div');
 		messageText.textContent = globalText;
 		messageElement.appendChild(messageText);
@@ -121,6 +114,8 @@ function sendMessage() {
 	clearGlobalLink();
 	scrollToBottom();
 }
+
+// Call API chỉ gửi text
 function fetchAPIGetText(message) {
 	// Send the message to the server API
 	fetch('/api/text', {
@@ -132,8 +127,10 @@ function fetchAPIGetText(message) {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.response !== undefined) {
+			if (data.response !== null) {
 				initializeSSE(data.response);
+			} else {
+				initializeSSE('Sever có vấn đề rồi bé yêu !!');
 			}
 		})
 		.catch((error) => {
@@ -141,6 +138,7 @@ function fetchAPIGetText(message) {
 		});
 }
 
+// Call API gửi text và ảnh
 function fetchAPIGetTextAndImage(formData) {
 	// Send the message to the server API
 	fetch('/api/textAndImage', {
@@ -152,8 +150,10 @@ function fetchAPIGetTextAndImage(formData) {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.response !== undefined) {
+			if (data.response !== null) {
 				initializeSSE(data.response);
+			} else {
+				initializeSSE('Sever có vấn đề rồi bé yêu !!');
 			}
 		})
 		.catch((error) => {
@@ -161,6 +161,7 @@ function fetchAPIGetTextAndImage(formData) {
 		});
 }
 
+// Call API gửi text và tài liệu
 function fetchAPIGetTextAndDocument(formData) {
 	// Send the message and document to the server API
 	fetch('/api/textAndDocument', {
@@ -169,11 +170,18 @@ function fetchAPIGetTextAndDocument(formData) {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			if (data.response !== undefined) {
+			if (data.response !== null) {
 				initializeSSE(data.response);
+			} else {
+				initializeSSE(
+					'Sever có vấn đề rồi bé yêu !! Nhớ sử dụng file PDF và dung lượng file lớn hơn nha bé!!',
+				);
 			}
 		})
 		.catch((error) => {
+			initializeSSE(
+				'Nhớ sử dụng file PDF và dung lượng file lớn hơn nha bé!!',
+			);
 			console.error('Error:', error);
 		});
 }
@@ -201,7 +209,7 @@ function initializeSSE(responseText) {
 			messageText.textContent += data.content;
 			scrollToBottom();
 			// receiveMessage(data.content);
-		} else if (data.type === 'end') {
+		} else if (data.type === 'end' || data.content === '') {
 			eventSource.close();
 			return;
 		}
@@ -214,16 +222,13 @@ function initializeSSE(responseText) {
 	};
 }
 
-// Function to receive and display messages
-function receiveMessage(message) {
-	scrollToBottom();
-}
-
 // Function to preview image or document based on Cloudinary upload result
 function previewImage(result) {
 	var format = result.info.format.toLowerCase();
 	var inputBox = document.querySelector('.inputBox');
 	var existingPreview = document.getElementById('filePreview');
+
+	clearGlobalLink();
 	if (existingPreview) {
 		inputBox.removeChild(existingPreview);
 	}
@@ -257,6 +262,7 @@ function previewImage(result) {
 	inputBox.insertBefore(preview, inputBox.firstChild);
 }
 
+// Chèn thời gian gửi tin nhắn
 function appendTimestamp(messageElement) {
 	var timestamp = document.createElement('div');
 	timestamp.classList.add('timestamp');
@@ -264,11 +270,13 @@ function appendTimestamp(messageElement) {
 	messageElement.appendChild(timestamp);
 }
 
+// Lăn màn hình xuống cuối cùng
 function scrollToBottom() {
 	var chatBox = document.getElementById('chatBox');
 	chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+// Xóa file đã chọn
 function clearReviewFile() {
 	var inputBox = document.querySelector('.inputBox');
 	var existingPreview = document.getElementById('filePreview');
@@ -277,6 +285,7 @@ function clearReviewFile() {
 	}
 }
 
+// Xóa nội link tài liệu
 function clearGlobalLink() {
 	globalText = '';
 	global_InforImage = '';
