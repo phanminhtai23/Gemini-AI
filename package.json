@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@cloudinary/url-gen": "^1.21.0"
+    "@cloudinary/url-gen": "^1.21.0",
+    "dotenv": "^16.4.7"
   }
 }
