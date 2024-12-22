@@ -26,3 +26,5 @@ Gemini-AI
 
 -   nhớ lịch sử ảnh
 -   cho tải tất cả file
+
+bash setup.sh
