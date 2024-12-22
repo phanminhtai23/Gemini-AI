@@ -64,15 +64,15 @@ body {
 .sent {
 	align-self: flex-end;
 	background-color: #abd2ff;
-	max-width: 400px;
+
+}
+.sent, .received {
+	max-width: 60%;
 	border-radius: 15px;
 }
-
 .received {
 	align-self: flex-start;
 	background-color: #f1f0f0;
-	max-width: 70%;
-	border-radius: 15px;
 }
 
 .timestamp {
@@ -195,7 +195,7 @@ body {
 
 	.chatBox {
 		width: 100%;
-		height: 41rem;
+		height: 68vh;
 	}
 
 	.inputBox {

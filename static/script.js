@@ -45,6 +45,20 @@ document
 
 // Nhấn nút gửi
 function sendMessage() {
+	var sendButton = document.getElementById('send');
+	
+	if (sendButton.disabled) {
+		return; // Nếu nút gửi bị vô hiệu hóa, không làm gì cả
+	}
+
+	// Vô hiệu hóa nút gửi khi đã gửi
+	fixedSendButton();
+
+	// Tắt bàn phím khi gửi tin nhắn
+	turnOffKeyboard();
+
+	sendButton.disabled = true; // Vô hiệu hóa nút gửi
+
 	var input = document.getElementById('messageInput');
 	var chatBox = document.getElementById('chatBox');
 	var messageElement = document.createElement('div');
@@ -221,6 +235,7 @@ function initializeSSE(responseText) {
 			// receiveMessage(data.content);
 		} else if (data.type === 'end' || data.content === '') {
 			eventSource.close();
+			unlockSendButton();
 			return;
 		}
 	};
@@ -228,6 +243,7 @@ function initializeSSE(responseText) {
 	eventSource.onerror = function (error) {
 		eventSource.close();
 		console.error('EventSource failed:', error);
+		unlockSendButton();
 		return;
 	};
 }
@@ -374,7 +390,21 @@ function clearWaitingMessage() {
 	} else if (typingIndicator) {
 		chatBox.removeChild(typingIndicator);
 	}
+}
 
+function fixedSendButton() {
+	var sendButton = document.getElementById('send');
+	sendButton.disabled = true;
+}
+
+function unlockSendButton() {
+	var sendButton = document.getElementById('send');
+	sendButton.disabled = false;
+}
+
+function turnOffKeyboard() {
+	var input = document.getElementById('messageInput');
+	input.blur();
 }
 
 /**

@@ -1,12 +1,10 @@
 import json
-from xml.dom.minidom import Document
 from flask import Flask, request, jsonify, render_template, Response
 import generate as text_gen
 import os
 from dotenv import load_dotenv
 import time
-from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
+from generate import reset_globals, model_general, documents_general, images_general
 
 load_dotenv()
 HOST = os.getenv('HOST')
@@ -23,6 +21,7 @@ app = Flask(__name__)
 @app.get('/')
 # route home
 def home():
+    reset_globals()
     return render_template('index.html', content="Hello World!")
 
 # Stream the response to the client
