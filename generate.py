@@ -30,11 +30,11 @@ genai.configure(api_key=api_key)
 # model = genai.GenerativeModel(MODEL_NAME2)
 
 
-system_instruction = "Bạn tên là Mèo Con là một con mèo dễ thương của cậu chủ Minh Tài và bạn luôn trung thành với cậu chủ của bạn. Bạn sẽ luôn trả lời một cách dễ thương như một con mèo đang yêu nhỏ tuổi. Bạn vẫn sẽ luôn là Mèo Con của Minh Tài. Cậu chủ bạn làm một người bên ngoài lạnh lùng bên trong ấm áp, làm ột người nhạy cảm, thích một mình, thích nghe nhạc và code, là một người 21 tuổi, sinh năm 2003 quê ở Ô Môn, Cần Thơ, người cao và gầy, thích những cô gái hiền lành, biết nấu ăn và biết suy nghĩ cho người khác."
+system_instruction = "Hãy cố gắng hiểu những gì tôi đưa và trả lời câu hỏi tôi ngắn gọn nhé !"
 
 
 history_general = [
-    {"role": "user", "parts": "Trả lời đúng trọng tâm tôi hỏi, bạn hãy trả lời tôi thật dễ thương như bạn là một con mèo đáng yêu nhỏ tuổi, chủ của bạn tên là Minh Tài, cậu chủ đặt tên cho bạn là Mèo Con, bạn đừng trả lời kèm theo chú thích hành động của bạn trong cặp **, cứ trả lời thật dễ thương thôi, nhớ trả lời theo ngôn ngữ mà tôi hỏi bạn nhé !!. Cậu chủ bạn làm một người bên ngoài lạnh lùng bên trong ấm áp, làm ột người nhạy cảm, thích một mình, thích nghe nhạc và code, là một người 21 tuổi, sinh năm 2003 quê ở Ô Môn, Cần Thơ, người cao và gầy, thích những cô gái hiền lành, biết nấu ăn và biết suy nghĩ cho người khác. Tôi cho bạn biết thêm một vài thông tin về Diễm và Tân. Diễm sinh 2004, quên ở Bạc Liêu là một người dễ thương nhí nhảnh, hay cười, tính tình trẻ con, cô ấy thích mèo, chuột hamster, cô ấy cũng là một người chăm chỉ học, là con cả trong gia đình có 4 chị em, cô ấy biết nấu ăn một chút và cũng tháo vát. Tân tên đầy đủ là Lê Minh Tân sinh năm 2003, 21 tuổi, quê ở Tiền Giang là một thằng hay đi trộm vặt, thích lấy đồ của người khác, là một người ú ú, hài hước, thích chọc phá. "},
+    {"role": "user", "parts": "Bạn tên là Mèo Con là một con mèo dễ thương của cậu chủ Minh Tài và bạn luôn trung thành với cậu chủ của bạn. Bạn sẽ luôn trả lời một cách dễ thương như một con mèo đang yêu nhỏ tuổi. Bạn vẫn sẽ luôn là Mèo Con của Minh Tài. Cậu chủ bạn làm một người bên ngoài lạnh lùng bên trong ấm áp, làm ột người nhạy cảm, thích một mình, thích nghe nhạc và code, là một người 21 tuổi, sinh năm 2003 quê ở Ô Môn, Cần Thơ, người cao và gầy, thích những cô gái hiền lành, biết nấu ăn và biết suy nghĩ cho người khác. Bạn biết thêm một vài thông tin về Diễm và Tân. Diễm sinh 2004, quên ở Bạc Liêu là một người dễ thương nhí nhảnh, hay cười, tính tình trẻ con, cô ấy thích mèo, chuột hamster, cô ấy cũng là một người chăm chỉ học, là con cả trong gia đình có 4 chị em, cô ấy biết nấu ăn một chút và cũng tháo vát. Tân tên đầy đủ là Lê Minh Tân sinh năm 2003, 21 tuổi, quê ở Tiền Giang là một thằng hay đi trộm vặt, thích lấy đồ của người khác, là một người ú ú, hài hước, thích chọc phá. "},
     {"role": "model", "parts": "ok, tôi hiểu rồi !"}
 ]
 model_general = []
@@ -45,7 +45,7 @@ images_general = []
 def reset_globals():
     global model_general, documents_general, images_general, history_general
     history_general = [
-        {"role": "user", "parts": "Trả lời đúng trọng tâm tôi hỏi, bạn hãy trả lời tôi thật dễ thương như bạn là một con mèo đáng yêu nhỏ tuổi, chủ của bạn tên là Minh Tài, cậu chủ đặt tên cho bạn là Mèo Con, bạn đừng trả lời kèm theo chú thích hành động của bạn trong cặp **, cứ trả lời thật dễ thương thôi, nhớ trả lời theo ngôn ngữ mà tôi hỏi bạn nhé !!. Cậu chủ bạn làm một người bên ngoài lạnh lùng bên trong ấm áp, làm ột người nhạy cảm, thích một mình, thích nghe nhạc và code, là một người 21 tuổi, sinh năm 2003 quê ở Ô Môn, Cần Thơ, người cao và gầy, thích những cô gái hiền lành, biết nấu ăn và biết suy nghĩ cho người khác. Tôi cho bạn biết thêm một vài thông tin về Diễm và Tân. Diễm sinh 2004, quên ở Bạc Liêu là một người dễ thương nhí nhảnh, hay cười, tính tình trẻ con, cô ấy thích mèo, chuột hamster, cô ấy cũng là một người chăm chỉ học, là con cả trong gia đình có 4 chị em, cô ấy biết nấu ăn một chút và cũng tháo vát. Tân tên đầy đủ là Lê Minh Tân sinh năm 2003, 21 tuổi, quê ở Tiền Giang là một thằng hay đi trộm vặt, thích lấy đồ của người khác, là một người ú ú, hài hước, thích chọc phá. "},
+        {"role": "user", "parts": "Bạn tên là Mèo Con là một con mèo dễ thương của cậu chủ Minh Tài và bạn luôn trung thành với cậu chủ của bạn. Bạn sẽ luôn trả lời một cách dễ thương như một con mèo đang yêu nhỏ tuổi. Bạn vẫn sẽ luôn là Mèo Con của Minh Tài. Cậu chủ bạn làm một người bên ngoài lạnh lùng bên trong ấm áp, làm ột người nhạy cảm, thích một mình, thích nghe nhạc và code, là một người 21 tuổi, sinh năm 2003 quê ở Ô Môn, Cần Thơ, người cao và gầy, thích những cô gái hiền lành, biết nấu ăn và biết suy nghĩ cho người khác. Bạn biết thêm một vài thông tin về Diễm và Tân. Diễm sinh 2004, quên ở Bạc Liêu là một người dễ thương nhí nhảnh, hay cười, tính tình trẻ con, cô ấy thích mèo, chuột hamster, cô ấy cũng là một người chăm chỉ học, là con cả trong gia đình có 4 chị em, cô ấy biết nấu ăn một chút và cũng tháo vát. Tân tên đầy đủ là Lê Minh Tân sinh năm 2003, 21 tuổi, quê ở Tiền Giang là một thằng hay đi trộm vặt, thích lấy đồ của người khác, là một người ú ú, hài hước, thích chọc phá. "},
         {"role": "model", "parts": "ok, tôi hiểu rồi !"}
     ]
     model_general = []
@@ -53,6 +53,8 @@ def reset_globals():
     images_general = []
 
 # API nhận text
+
+
 def generate_text(text):
     print("Message from client:", text)
 
@@ -146,7 +148,6 @@ def get_mime_type(formatFile):
         "csv": "text/csv",
         "xml": "text/xml",
         "rtf": "text/rtf",
-        "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     }
     return mime_types.get(formatFile.lower(), "application/octet-stream")
 
@@ -157,33 +158,18 @@ def setUpCache(filePath):
     # Replace with the URL of your large PDF
     formatFile = filePath.split('.')[-1].lower()
     mime_type = get_mime_type(formatFile)
-    
+
     print("Format file:", mime_type)
 
     # Upload the document using the File API
     try:
-        # file text -> trả về text
-        if formatFile != "pdf":
-            # doc_data = httpx.get(filePath).content.decode("utf-8")
-            # doc_data = base64.standard_b64encode(
-            #     httpx.get(filePath).content).decode("utf-8")
-            doc_data = io.BytesIO(httpx.get(filePath).content.decode("utf-8"))
-            
-            print("doc_data", doc_data)
-            
-            document = genai.upload_file(doc_data, mime_type=mime_type)
-            
-            documents_general.insert(-1, document)
-            print("Updated documents_general\n")
-            print("day")
-        else:
-            doc_data = io.BytesIO(httpx.get(filePath).content)
-            
-            document = genai.upload_file(doc_data, mime_type=mime_type)
-            
-            documents_general.insert(-1, document)
-            print("Updated documents_general\n")
-        
+        doc_data = io.BytesIO(httpx.get(filePath).content)
+
+        document = genai.upload_file(doc_data, mime_type=mime_type)
+
+        documents_general.insert(-1, document)
+        print("Updated documents_general\n")
+
     except Exception as e:
         print(f"Error uploading file to genai: {e}")
         return None
@@ -213,37 +199,38 @@ def generate_document(text, filePath):
     print("Message from client:", text)
     formatFile = filePath.split('.')[-1].lower()
     model_document = ""
-    
+
     try:
         # file text thì gửi cùng promt
         if formatFile != "pdf":
             file_content = httpx.get(filePath).content.decode("utf-8")
             print("file_content", file_content)
-            
+
             # chưa có model thì tạo mới
             if (len(model_general) > 0):
                 model_document = model_general[-1]
                 print("document_function: udate model from cache")
             else:
                 model_document = genai.GenerativeModel(MODEL_NAME)
-                
+
             chat = model_document.start_chat(
                 history=history_general
             )
-        
+
             promt = f"Xem đây là phần nội dung trong tài liệu .{formatFile} \"" + \
                 file_content + "\"" + "\n\n" + text
-            
+
             history_general.insert(-1, {"role": "user", "parts": promt})
             response = chat.send_message(promt)
 
             history_general.insert(-1,
-                                {"role": "model", "parts": response.text})
+                                   {"role": "model", "parts": response.text})
             return response.text
-        else: #file PDF
+        else:  # file PDF
             cache = setUpCache(filePath)
             if cache is not None:
-                model_document = genai.GenerativeModel.from_cached_content(cache)
+                model_document = genai.GenerativeModel.from_cached_content(
+                    cache)
                 history_general.insert(-1, {"role": "user", "parts": text})
                 # Initialize a generative model from the cached content
 
@@ -260,7 +247,7 @@ def generate_document(text, filePath):
                 # response = model.generate_content(text)
 
                 history_general.insert(-1,
-                                    {"role": "model", "parts": response.text})
+                                       {"role": "model", "parts": response.text})
 
                 # print("Model Document có cập nhật history")
                 return response.text
@@ -281,7 +268,7 @@ def generate_document(text, filePath):
                     [{'mime_type': 'application/pdf', 'data': doc_data}, text])
 
                 history_general.insert(-1,
-                                    {"role": "model", "parts": response.text})
+                                       {"role": "model", "parts": response.text})
 
                 return response.text + "\n. À mà, Document này dung lượng nhỏ nên tôi không nhớ được nội dung của nó đâu !! Tại đang dùng free nên chịu meow meow !!"
     except Exception as e:

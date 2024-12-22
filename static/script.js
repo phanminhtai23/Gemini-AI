@@ -101,7 +101,7 @@ function sendMessage() {
 			'.' +
 			global_InforDocument.secure_url.split('.').pop().toLowerCase();
 		doc.classList.add('sentDocument');
-		doc.style.textDecoration = 'underline';
+		// doc.style.textDecoration = 'underline';
 		doc.style.color = 'black';
 		messageElement.appendChild(doc);
 		appendTimestamp(messageElement);
@@ -196,14 +196,12 @@ function fetchAPIGetTextAndDocument(formData) {
 				initializeSSE(data.response);
 			} else {
 				initializeSSE(
-					'Sever có vấn đề rồi bé yêu !! Nhớ sử dụng file PDF và dung lượng file lớn hơn nha bé!!',
+					'Lỗi rồi bé ơi, Moew chỉ hỗ trợ file có định dạng pdf, txt, js,..thôi và đừng quên đặt câu hỏi nhé!!',
 				);
 			}
 		})
 		.catch((error) => {
-			initializeSSE(
-				'Nhớ sử dụng file PDF và dung lượng file lớn hơn nha bé!!',
-			);
+			initializeSSE('Lỗi rồi bé ơi, Moew chỉ hỗ trợ file có định dạng pdf, txt, js,..thôi và đừng quên đặt câu hỏi nhé!!');
 			console.error('Error:', error);
 		});
 }
@@ -298,7 +296,7 @@ function appendTimestamp(messageElement) {
 	messageElement.appendChild(timestamp);
 }
 
-// hiệu ứng chờ phản hồi từ API
+// hiện hiệu ứng chờ phản hồi từ API
 function createElementWaitingMessage() {
 	var chatBox = document.getElementById('chatBox');
 
@@ -316,9 +314,8 @@ function createElementWaitingMessage() {
 
 	messageElementWaiting.appendChild(messageTextWaiting);
 	startTimer(messageElementWaiting);
-
 	chatBox.appendChild(messageElementWaiting);
-
+	scrollToBottom();
 	// stopTimer();
 }
 
@@ -329,6 +326,7 @@ function startTimer(messageElementWaiting) {
 	var timesWait = document.createElement('div');
 	timesWait.classList.add('timesWait');
 	messageElementWaiting.appendChild(timesWait);
+	// scrollToBottom();
 
 	function updateTimer() {
 		milliseconds += 100; // Tăng mili giây mỗi 100ms
@@ -345,6 +343,7 @@ function startTimer(messageElementWaiting) {
 
 	// Cập nhật thời gian mỗi 100ms
 	timerId = setInterval(updateTimer, 100);
+	
 }
 
 // Đừng đếm thời gian đợi phản hồi
@@ -392,16 +391,19 @@ function clearWaitingMessage() {
 	}
 }
 
+// Hàm để vô hiệu hóa nút gửi
 function fixedSendButton() {
 	var sendButton = document.getElementById('send');
 	sendButton.disabled = true;
 }
 
+// Hàm để mở khóa nút gửi
 function unlockSendButton() {
 	var sendButton = document.getElementById('send');
 	sendButton.disabled = false;
 }
 
+// Hàm tắt bàn phím
 function turnOffKeyboard() {
 	var input = document.getElementById('messageInput');
 	input.blur();
@@ -421,11 +423,6 @@ function checkFileType(url) {
 	var documentExtensions = [
 		'pdf',
 		'html',
-		'docx',
-		'xls',
-		'xlsx',
-		'ppt',
-		'pptx',
 		'txt',
 		'js',
 		'py',

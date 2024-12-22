@@ -59,6 +59,8 @@ body {
 	max-width: 80%;
 	position: relative;
 	font-size: 16px;
+	 word-wrap: break-word; /* Ngắt dòng khi từ quá dài */
+    overflow-wrap: break-word; /* Ngắt dòng khi từ quá dài */
 }
 
 .sent {
@@ -180,7 +182,7 @@ body {
 }
 
 #filePreview {
-	max-width: 100px;
+	max-width: 70px;
 }
 
 @media (max-width: 600px) {
