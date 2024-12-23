@@ -253,9 +253,7 @@ function previewImage(result) {
 	var existingPreview = document.getElementById('filePreview');
 
 	clearGlobalLink();
-	if (existingPreview) {
-		inputBox.removeChild(existingPreview);
-	}
+	clearReviewFile();
 
 	var preview;
 	if (checkFileType(format) === 'image') {
@@ -265,22 +263,20 @@ function previewImage(result) {
 
 		// set global link image
 		global_InforImage = result.info;
-
-		preview.style.maxWidth = '70px';
-		preview.style.maxHeight = '70px';
+		preview.classList.add('previewImage');
 	} else if (checkFileType(format) === 'document') {
 		// File is a document
 		preview = document.createElement('div');
 		preview.textContent = result.info.original_filename + '.' + format;
 
 		global_InforDocument = result.info;
+		preview.classList.add('previewLink');
 	} else {
 		alert('Không hỗ trợ file này!');
 		return;
 	}
 
 	preview.id = 'filePreview';
-	preview.style.marginRight = '10px';
 	inputBox.appendChild(preview);
 	inputBox.insertBefore(preview, inputBox.firstChild);
 }

@@ -4,7 +4,8 @@ import generate as text_gen
 import os
 from dotenv import load_dotenv
 import time
-from generate import reset_globals, model_general, documents_general, images_general
+from generate import reset_globals
+from waitress import serve
 
 load_dotenv()
 HOST = os.getenv('HOST')
@@ -21,7 +22,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'HEAD'])
 def home():
     if request.method == 'HEAD':
-        return '', 200  # Trả về phản hồi trống với mã trạng thái 200 cho yêu cầu HEAD
+        return jsonify({'response_HEAD': "chào bot nhe!"}), 200  # Trả về phản hồi trống với mã trạng thái 200 cho yêu cầu HEAD
 
     reset_globals()
     return render_template('index.html', content="Hello World!")
@@ -100,4 +101,8 @@ def receive_text_and_document():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host=HOST, port=PORT)
+    print(f"Server is running on http://{HOST}:{PORT}")
+    serve(app, host=HOST, port=PORT)
+    # app.run(debug=True, host=HOST, port=PORT)
+    
+    

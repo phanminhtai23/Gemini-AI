@@ -23,19 +23,19 @@ MODEL_NAME2 = "models/gemini-1.5-flash-001"
 # MODEL_NAME2 = "models/gemini-1.5-flash-latest"
 
 load_dotenv()
-
+initial_construction = os.getenv('INITIAL_CONTRUCTION')
 api_key = os.getenv('API_KEY')
 expire_time_document = os.getenv('EXPIRE_TIME_DOCUMENT')
 genai.configure(api_key=api_key)
 # model = genai.GenerativeModel(MODEL_NAME2)
 
 
-system_instruction = "Hãy cố gắng hiểu những gì tôi đưa và trả lời câu hỏi tôi ngắn gọn nhé !"
+system_instruction = "Hãy cố gắng hiểu những gì tôi gửi nhé, tôi sẽ hỏi trong tài liệu tôi gửi kèm !"
 
 
 history_general = [
-    {"role": "user", "parts": "Bạn tên là Mèo Con là một con mèo dễ thương của cậu chủ Minh Tài và bạn luôn trung thành với cậu chủ của bạn. Bạn sẽ luôn trả lời một cách dễ thương như một con mèo đang yêu nhỏ tuổi. Bạn vẫn sẽ luôn là Mèo Con của Minh Tài. Cậu chủ bạn làm một người bên ngoài lạnh lùng bên trong ấm áp, làm ột người nhạy cảm, thích một mình, thích nghe nhạc và code, là một người 21 tuổi, sinh năm 2003 quê ở Ô Môn, Cần Thơ, người cao và gầy, thích những cô gái hiền lành, biết nấu ăn và biết suy nghĩ cho người khác. Bạn biết thêm một vài thông tin về Diễm và Tân. Diễm sinh 2004, quên ở Bạc Liêu là một người dễ thương nhí nhảnh, hay cười, tính tình trẻ con, cô ấy thích mèo, chuột hamster, cô ấy cũng là một người chăm chỉ học, là con cả trong gia đình có 4 chị em, cô ấy biết nấu ăn một chút và cũng tháo vát. Tân tên đầy đủ là Lê Minh Tân sinh năm 2003, 21 tuổi, quê ở Tiền Giang là một thằng hay đi trộm vặt, thích lấy đồ của người khác, là một người ú ú, hài hước, thích chọc phá. "},
-    {"role": "model", "parts": "ok, tôi hiểu rồi !"}
+    {"role": "user", "parts": initial_construction},
+    {"role": "model", "parts": "ok, tôi sẽ vâng lời !"}
 ]
 model_general = []
 documents_general = []
@@ -56,13 +56,13 @@ def reset_globals():
 
 
 def generate_text(text):
-    print("Message from client:", text)
+    print("Client:", text)
 
     model_text = ""
 
     if (len(model_general) > 0):
         model_text = model_general[-1]
-        print("text_function: udate model from cache")
+        # print("text_function: udate model from cache")
     else:
         model_text = genai.GenerativeModel(MODEL_NAME)
 
@@ -101,19 +101,19 @@ def generate_text(text):
 
 # API nhận text và image
 def generate_image(text, filePath):
-    print("Message from client:", text)
+    print("Client:", text)
 
     model_image = ""
     if (len(model_general) > 0):
         model_image = model_general[-1]
-        print("image_function: udate model from cache")
+        # print("image_function: udate model from cache")
     else:
         model_image = genai.GenerativeModel(MODEL_NAME)
 
     try:
         # image = base64.b64encode(httpx.get(filePath).content).decode('utf-8')
         image = PIL.Image.open(io.BytesIO(requests.get(filePath).content))
-        print("Updated images_general\n")
+        # print("Updated images_general\n")
 
         images_general.insert(-1, image)
         chat = model_image.start_chat(
@@ -127,7 +127,7 @@ def generate_image(text, filePath):
 
         history_general.insert(-1, {"role": "model", "parts": response.text})
 
-        print("Model Text có cập nhật history")
+        # print("Model Text có cập nhật history")
         return response.text
     except Exception as e:
         print(f"Error to generate image: {e}")
@@ -168,7 +168,7 @@ def setUpCache(filePath):
         document = genai.upload_file(doc_data, mime_type=mime_type)
 
         documents_general.insert(-1, document)
-        print("Updated documents_general\n")
+        # print("Updated documents_general\n")
 
     except Exception as e:
         print(f"Error uploading file to genai: {e}")
@@ -196,7 +196,7 @@ def setUpCache(filePath):
 
 
 def generate_document(text, filePath):
-    print("Message from client:", text)
+    print("Client:", text)
     formatFile = filePath.split('.')[-1].lower()
     model_document = ""
 
@@ -209,7 +209,7 @@ def generate_document(text, filePath):
             # chưa có model thì tạo mới
             if (len(model_general) > 0):
                 model_document = model_general[-1]
-                print("document_function: udate model from cache")
+                # print("document_function: udate model from cache")
             else:
                 model_document = genai.GenerativeModel(MODEL_NAME)
 
@@ -234,7 +234,7 @@ def generate_document(text, filePath):
                 history_general.insert(-1, {"role": "user", "parts": text})
                 # Initialize a generative model from the cached content
 
-                print("Updated model_general")
+                # print("Updated model_general")
                 model_general.insert(-1, model_document)
 
                 # Generate content using the cached prompt and document
@@ -252,7 +252,7 @@ def generate_document(text, filePath):
                 # print("Model Document có cập nhật history")
                 return response.text
             else:
-                print("Document dung lượng nhỏ, k dùng cache")
+                # print("Document dung lượng nhỏ, k dùng cache")
                 model_document = genai.GenerativeModel(MODEL_NAME)
 
                 history_general.insert(-1, {"role": "user", "parts": text})
@@ -270,7 +270,7 @@ def generate_document(text, filePath):
                 history_general.insert(-1,
                                        {"role": "model", "parts": response.text})
 
-                return response.text + "\n. À mà, Document này dung lượng nhỏ nên tôi không nhớ được nội dung của nó đâu !! Tại đang dùng free nên chịu meow meow !!"
+                return response.text + " À mà, Document này dung lượng nhỏ nên tôi không nhớ được nội dung của nó đâu !! Tại đang dùng free nên chịu meow meow !!"
     except Exception as e:
         print(f"Error to generate document: {e}")
         return None
