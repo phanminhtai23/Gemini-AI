@@ -19,12 +19,24 @@ DOCUMENT_PATH = current_path + "/documents"
 app = Flask(__name__)
 
 
+def clearTerminar():
+    # Kiểm tra hệ điều hành và gọi lệnh clear phù hợp
+    if os.name == 'nt':  # Windows
+        os.system('cls')
+        print(f"Server is running on http://{HOST}:{PORT}")
+    else:  # Linux or MacOS
+        os.system('clear')
+        print(f"Server is running on http://{HOST}:{PORT}")
+
+
+
 @app.route('/', methods=['GET', 'HEAD'])
 def home():
     if request.method == 'HEAD':
         return jsonify({'response_HEAD': "chào bot nhe!"}), 200  # Trả về phản hồi trống với mã trạng thái 200 cho yêu cầu HEAD
 
     reset_globals()
+    clearTerminar()
     return render_template('index.html', content="Hello World!")
 
 # Stream the response to the client

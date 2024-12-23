@@ -9,3 +9,5 @@ echo "Cài đặt các gói phụ thuộc cho Node.js..."
 npm install
 
 echo "Hoàn thành cài đặt các gói phụ thuộc."
+
+# run: bash setup.sh
