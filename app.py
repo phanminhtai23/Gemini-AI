@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import time
 from generate import reset_globals
 from waitress import serve
+from user_agents import parse
 
 load_dotenv()
 HOST = os.getenv('HOST')
@@ -19,29 +20,37 @@ DOCUMENT_PATH = current_path + "/documents"
 app = Flask(__name__)
 
 
-def clearTerminar():
-    # Kiểm tra hệ điều hành và gọi lệnh clear phù hợp
-    if os.name == 'nt':  # Windows
-        os.system('cls')
-    else:  # Linux or MacOS
-        os.system('clear')
-
+# def clearTerminar():
+#     # Kiểm tra hệ điều hành và gọi lệnh clear phù hợp
+#     if os.name == 'nt':  # Windows
+#         os.system('cls')
+#     else:  # Linux or MacOS
+#         os.system('clear')
 
 @app.route('/', methods=['GET', 'HEAD'])
 def home():
     if request.method == 'HEAD':
-        # Trả về phản hồi trống với mã trạng thái 200 cho yêu cầu HEAD
-        return jsonify({'response_HEAD': "chào bot nhe!"}), 200
+        return jsonify({'response_HEAD': "chào bot nhe!"}), 200  # Trả về phản hồi trống với mã trạng thái 200 cho yêu cầu HEAD
+    else:
+        print("________________________________________________________")
+        print("- User accessed the website at:", time.strftime("%d-%m-%Y, %H:%M:%S"))
+        user_agent_string = request.headers.get('User-Agent')
+        user_agent = parse(user_agent_string)
+        platform = user_agent.os.family
+        browser = user_agent.browser.family
+        print("- User agent:", user_agent_string)
+        print("- User platform:", platform)
+        print("- User browser:", browser)
 
-    reset_globals()
-    clearTerminar()
-    return render_template('index.html', content="Hello World!")
+        reset_globals()
+        # clearTerminar()
+        return render_template('index.html', content="Hello World!")
 
 # Stream the response to the client
 
 
 def event_stream(response_text):
-    print("response from API:", response_text)
+    print("Response:", response_text)
     words = response_text.split()
     for chunk in words:
         yield f"data: {json.dumps({'type': 'text', 'content': chunk + ' '})}\n\n"
@@ -111,6 +120,6 @@ def receive_text_and_document():
 
 
 if __name__ == '__main__':
-    print(f"Server is running on http://{HOST}:{PORT}")
+    print(f"Server is running on http://{HOST}:{PORT}", time.strftime("%d-%m-%Y, %H:%M:%S"))
     serve(app, host=HOST, port=PORT)
     # app.run(debug=True, host=HOST, port=PORT)
