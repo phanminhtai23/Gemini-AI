@@ -23,17 +23,15 @@ def clearTerminar():
     # Kiểm tra hệ điều hành và gọi lệnh clear phù hợp
     if os.name == 'nt':  # Windows
         os.system('cls')
-        print(f"Server is running on http://{HOST}:{PORT}")
     else:  # Linux or MacOS
         os.system('clear')
-        print(f"Server is running on http://{HOST}:{PORT}")
-
 
 
 @app.route('/', methods=['GET', 'HEAD'])
 def home():
     if request.method == 'HEAD':
-        return jsonify({'response_HEAD': "chào bot nhe!"}), 200  # Trả về phản hồi trống với mã trạng thái 200 cho yêu cầu HEAD
+        # Trả về phản hồi trống với mã trạng thái 200 cho yêu cầu HEAD
+        return jsonify({'response_HEAD': "chào bot nhe!"}), 200
 
     reset_globals()
     clearTerminar()
@@ -116,5 +114,3 @@ if __name__ == '__main__':
     print(f"Server is running on http://{HOST}:{PORT}")
     serve(app, host=HOST, port=PORT)
     # app.run(debug=True, host=HOST, port=PORT)
-    
-    
