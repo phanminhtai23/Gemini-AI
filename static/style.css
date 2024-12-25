@@ -2,7 +2,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	height: 95vh;
 	margin: 0;
 	flex-direction: column;
 	font-family: 'Google Sans Mono', 'Courier New', Courier, monospace;
@@ -194,10 +194,22 @@ body {
 	}
 }
 .titile {
-	font-size: 3.5rem;
+	font-size: 4rem;
+}
+
+.image-titile {
+	width: 86px;
+	margin: -36px 0 0 5px;
+	/* padding: 0 0 27px 5px; */
 }
 
 @media (max-width: 600px) {
+	.image-titile {
+		width: 58px;
+		margin: -23px 0 0 6px;
+		/* padding: 0 0 27px 5px; */
+	}
+
 	.previewLink {
 		max-width: 100%;
 	}
