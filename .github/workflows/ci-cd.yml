@@ -42,7 +42,7 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: ${{ secrets.VPS_PORT }}
         script: |
-          docker pull minhtai03/meowchat:latest
-          docker stop meowchat_flask_container || true
-          docker rm meowchat_flask_container || true
-          docker run --env-file .env -d -p 5000:5000 --name meowchat_flask_container --restart unless-stopped minhtai03/meowchat:latest
+          sudo docker pull minhtai03/meowchat:latest
+          sudo docker stop meowchat_flask_container || true
+          sudo docker rm meowchat_flask_container || true
+          sudo docker run --env-file .env -d -p 5000:5000 --name meowchat_flask_container --restart unless-stopped minhtai03/meowchat:latest
