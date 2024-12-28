@@ -1,0 +1,12 @@
+/venv
+/.env
+/fine-turning.ipynb
+/images
+/documents
+/.idea
+/__pycache__
+/.prettierrc
+/node_modules
+/.vscode
+/API_file.py
+/vevv
