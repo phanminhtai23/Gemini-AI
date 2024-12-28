@@ -54,7 +54,7 @@ def home():
             # clearTerminar()
             return render_template('index.html', content="Hello World!")
         except Exception as e:
-            print("error user_agent", e)
+            print("error parse user_agent", e)
 
             reset_globals()
             # clearTerminar()
@@ -136,5 +136,5 @@ def receive_text_and_document():
 if __name__ == '__main__':
     print(f"Server is running on http://{HOST}:{PORT}",
           time.strftime("%d-%m-%Y, %H:%M:%S"))
-    # serve(app, host=HOST, port=PORT)
-    app.run(debug=True, host=HOST, port=PORT)
+    serve(app, host=HOST, port=PORT)
+    # app.run(debug=True, host=HOST, port=PORT)
