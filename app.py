@@ -17,8 +17,6 @@ SPEED_GENERATE = float(os.getenv('SPEED_GENERATE'))
 # Get the current working directory
 current_path = os.getcwd()
 
-IMAGES_PATH = current_path + "/images"
-DOCUMENT_PATH = current_path + "/documents"
 app = Flask(__name__)
 
 
@@ -34,10 +32,12 @@ def get_current_time_hcm():
     timezone = pytz.timezone('Asia/Ho_Chi_Minh')
     return datetime.now(timezone).strftime("%d-%m-%Y, %H:%M:%S")
 
+
 @app.route('/', methods=['GET', 'HEAD'])
 def home():
     if request.method == 'HEAD':
-        return jsonify({'response_HEAD': "chào bot nhe!"}), 200  # Trả về phản hồi trống với mã trạng thái 200 cho yêu cầu HEAD
+        # Trả về phản hồi trống với mã trạng thái 200 cho yêu cầu HEAD
+        return jsonify({'response_HEAD': "chào bot nhe!"}), 200
     else:
         try:
             print("________________________________________________________")
@@ -55,7 +55,7 @@ def home():
             return render_template('index.html', content="Hello World!")
         except Exception as e:
             print("error user_agent", e)
-            
+
             reset_globals()
             # clearTerminar()
             return render_template('index.html', content="Hello World!")
@@ -134,6 +134,7 @@ def receive_text_and_document():
 
 
 if __name__ == '__main__':
-    print(f"Server is running on http://{HOST}:{PORT}", time.strftime("%d-%m-%Y, %H:%M:%S"))
+    print(f"Server is running on http://{HOST}:{PORT}",
+          time.strftime("%d-%m-%Y, %H:%M:%S"))
     # serve(app, host=HOST, port=PORT)
     app.run(debug=True, host=HOST, port=PORT)
