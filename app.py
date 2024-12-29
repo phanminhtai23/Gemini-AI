@@ -10,6 +10,10 @@ from user_agents import parse
 from datetime import datetime
 import pytz
 
+
+#tự odonjg lod
+from livereload import Server
+
 load_dotenv()
 HOST = os.getenv('HOST')
 PORT = os.getenv('PORT')
@@ -52,13 +56,13 @@ def home():
 
             reset_globals()
             # clearTerminar()
-            return render_template('index.html', content="Hello World!")
+            return render_template('index1.html', content="Hello World!")
         except Exception as e:
             print("error parse user_agent", e)
 
             reset_globals()
             # clearTerminar()
-            return render_template('index.html', content="Hello World!")
+            return render_template('index1.html', content="Hello World!")
 
 # Stream the response to the client
 
@@ -136,5 +140,12 @@ def receive_text_and_document():
 if __name__ == '__main__':
     print(f"Server is running on http://{HOST}:{PORT}",
           time.strftime("%d-%m-%Y, %H:%M:%S"))
-    serve(app, host=HOST, port=PORT)
+    #Production
+    # serve(app, host=HOST, port=PORT)
+    
     # app.run(debug=True, host=HOST, port=PORT)
+    
+    #Development
+    server = Server(app.wsgi_app)
+    server.watch('static/*.*')  # Theo dõi các thay đổi trong thư mục static
+    server.serve(port=PORT, host=HOST)

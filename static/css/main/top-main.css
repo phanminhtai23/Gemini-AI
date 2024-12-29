@@ -1,0 +1,65 @@
+@import url('../variables/variables.css');
+
+#top-main {
+	padding: 0 20px;
+	height: var(--proportion-top);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: row;
+
+	border: #818181 solid 1px;
+}
+
+.top-side-main {
+	display: none;
+	text-align: center;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: row-;
+}
+
+.top-side-main .togglebtn-main {
+	margin-right: 20px;
+
+	font-size: 25px;
+	cursor: pointer;
+}
+
+.togglebtn-plus-main {
+	line-height: 100%;
+}
+
+.top-main .titile {
+	border: #818181 solid 1px;
+}
+
+.user {
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	height: 100%;
+	/* flex-direction: row; */
+}
+.user .user-name {
+	font-size: 16px;
+	max-width: 80px;
+	overflow: hidden;
+	padding: 0 5px;
+}
+
+.user i {
+}
+
+.title span {
+	font-size: 38px;
+	font-weight: 600;
+}
+
+.title .image-titile {
+	max-width: 40px;
+	margin: -28px 0 0 0;
+}
+/* .top-main .user-info {
+
+} */

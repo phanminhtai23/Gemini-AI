@@ -1,0 +1,24 @@
+#chatBox {
+	height: var(--proportion-body);
+	border: #818181 solid 1px;
+	height: 80%;
+	max-width: 100%;
+	padding: 0 15%;
+	border-radius: 10px;
+
+	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+}
+
+@media screen and (max-width: 800px) {
+	#chatBox {
+		padding: 0 5%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	#chatBox {
+		padding: 0;
+	}
+}
