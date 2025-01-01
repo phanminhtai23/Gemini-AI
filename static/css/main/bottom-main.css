@@ -1,5 +1,112 @@
 #bottom-main {
-	height: var(--proportion-foot);
-	border: #818181 solid 1px;
+	display: flex;
+	align-items: flex-end;
+	padding: 10px;
+	justify-content: center;
+	position: relative;
 }
 
+.input-container {
+	position: absolute; /* Thay đổi từ relative sang absolute */
+	bottom: -25px; /* vị trí ô nhập text -25px */
+	height: 90px;
+	width: 100%;
+	max-width: 600px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	background-color: #ccc;
+	border-radius: 15px;
+	z-index: 1;
+
+	/* Cho phép mở rộng theo nội dung */
+	height: auto;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+#messageInput {
+	background-color: #ccc;
+	width: 95%;
+	border: none;
+	outline: none;
+	margin: 18px 0 34px 0; /* Điều chỉnh khoảng cách dưới */
+}
+
+#messageInput:focus {
+	outline: none;
+}
+
+#upload_widget,
+.font-awesome-send {
+	position: absolute;
+	bottom: 10px;
+	cursor: pointer;
+	font-size: 1.5em;
+}
+
+#upload_widget {
+	bottom: 20px;
+	right: 569px;
+}
+
+.font-awesome-send {
+	right: 10px;
+}
+
+#chatBox {
+	flex: 1;
+	overflow-y: auto;
+}
+
+/* preview-image */
+.preview-imgs {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+
+	width: 100%;
+}
+
+.img-container {
+	position: relative; /* Đặt vị trí tương đối cho .img-container */
+	display: inline-block;
+	width: fit-content; /* Đảm bảo kích thước bao quanh nội dung */
+	margin-right: 5px;
+}
+
+.image {
+	display: block;
+	width: 50px;
+	height: auto;
+	border-radius: 15px;
+}
+
+.image-close-btn {
+	position: absolute;
+	top: -2px;
+	right: -1px;
+	cursor: pointer;
+	background-color: black;
+	border-radius: 6px;
+	padding: 5px 2px;
+	color: white;
+}
+
+.preview-document {
+	max-width: 200px;
+	overflow: hidden;
+}
+
+@media screen and (max-width: 800px) {
+	#chatBox {
+		padding: 0 5%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	#chatBox {
+		padding: 0;
+	}
+}

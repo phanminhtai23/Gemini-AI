@@ -1,0 +1,43 @@
+Hiệu lực: Đã biết
+Tình trạng: Đã biết
+BỘ Y TẾ
+-------
+
+Số: 01/2018/TT-BYT
+
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+---------------
+
+Hà Nội, ngày 18 tháng 01 năm 2018
+
+THÔNG TƯ
+
+QUY ĐỊNH GHI NHÃN THUỐC, NGUYÊN LIỆU LÀM THUỐC VÀ TỜ HƯỚNG DẪN SỬ DỤNG THUỐC
+
+Căn cứ Luật số 105/2016/QH13 ngày 06 tháng 04 năm 2016 về dược;
+
+Căn cứ Nghị định số 54/2017/NĐ-CP ngày 08 tháng 05 năm 2017 của Chính phủ quy định chi tiết một số điều và biện pháp thi hành Luật dược;
+
+Căn cứ Nghị định số 43/2017/NĐ-CP ngày 14 tháng 04 năm 2017 của Chính phủ về nhãn hàng hóa;
+
+Căn cứ Nghị định số 75/2017/NĐ-CP ngày 20 tháng 06 năm 2017 của Chính phủ quy định chức năng, nhiệm vụ, quyền hạn và cơ cấu tổ chức của Bộ Y tế;
+
+Theo đề nghị của Cục trưởng Cục Quản lý Dược,
+
+Bộ trưởng Bộ Y tế ban hành Thông tư quy định ghi nhãn thuốc, nguyên liệu làm thuốc và tờ hướng dẫn sử dụng thuốc.
+
+a) Tên thuốc;
+b) Dạng bào chế;
+c) Thành phần, hàm lượng, khối lượng hoặc nồng độ của dược chất, dược liệu trong công thức thuốc;
+d) Quy cách đóng gói;
+đ) Chỉ định, cách dùng, chống chỉ định của thuốc;
+e) Số giấy đăng ký lưu hành hoặc số giấy phép nhập khẩu (nếu có);d
+g) Số lô sản xuất, ngày sản xuất, hạn dùng của thuốc, tiêu chuẩn chất lượng, điều kiện bảo quản thuốc;
+h) Các dấu hiệu lưu ý và khuyến cáo khi dùng thuốc;
+i) Tên cơ sở sản xuất thuốc, địa chỉ cơ sở sản xuất thuốc;
+k) Tên, địa chỉ của cơ sở nhập khẩu (đối với thuốc nhập khẩu);
+l) Xuất xứ của thuốc.
+
+Đoạn văn bản sau là mô tả của một loại thuốc, hãy trích xuất dữ liệu trong đoạn sau thành dữ liệu json và trích theo các trường như sau:
+tên thuốc(tên đầy đủ của thuốc), dạng bào chế, thành phần(tìm hàm lượng, khối lượng hoặc nồng độ của dược chất, dược liệu trong công thức thuốc), quy cách đóng gói, chỉ định, cách dùng, chống chỉ định, hạn sử dụng, tiêu chuẩn chất lượng, điều kiện bảo quản, khuyến cáo, Tên cơ sở sản xuất thuốc, địa chỉ cơ sở sản xuất thuốc, tương tác thuốc(chứa các cặp dạng "Tên thuốc tương tác" và "vì sao, hậu quả là gì"), Hãy trả lời lại dữ liệu dạng JSON thôi nhé, sau đây là đoạn văn bản đó:

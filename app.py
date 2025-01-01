@@ -9,9 +9,10 @@ from waitress import serve
 from user_agents import parse
 from datetime import datetime
 import pytz
+import re
 
 
-#tự odonjg lod
+# tự odonjg lod
 from livereload import Server
 
 load_dotenv()
@@ -68,8 +69,10 @@ def home():
 
 
 def event_stream(response_text):
+
     print("Response:", response_text)
-    words = response_text.split()
+    words = response_text.split(' ')
+    print("word:", words)
     for chunk in words:
         yield f"data: {json.dumps({'type': 'text', 'content': chunk + ' '})}\n\n"
         time.sleep(SPEED_GENERATE)  # sleep to slow down the real-time display
@@ -89,6 +92,7 @@ def receive_text():
 
         result = text_gen.generate_text(response_text)
 
+        # print("Response:", result)
         return jsonify({'response': result})
     except Exception as e:
         print("error /api/text", e)
@@ -140,12 +144,13 @@ def receive_text_and_document():
 if __name__ == '__main__':
     print(f"Server is running on http://{HOST}:{PORT}",
           time.strftime("%d-%m-%Y, %H:%M:%S"))
-    #Production
+    # Production
     # serve(app, host=HOST, port=PORT)
-    
-    # app.run(debug=True, host=HOST, port=PORT)
-    
-    #Development
-    server = Server(app.wsgi_app)
-    server.watch('static/*.*')  # Theo dõi các thay đổi trong thư mục static
-    server.serve(port=PORT, host=HOST)
+
+    # Development
+    app.run(debug=True, host=HOST, port=PORT)
+
+    # Development
+    # server = Server(app.wsgi_app)
+    # server.watch('static/*.*')  # Theo dõi các thay đổi trong thư mục static
+    # server.serve(port=PORT, host=HOST)

@@ -107,31 +107,46 @@
 			</div>
 			<!--------- START BODY CHAT MAIN ---------->
 
-			<div id="chatBox">chatbox</div>
+			<div id="chatBox">
+				<div class="message sent">
+					<div>hi</div>
+					<div class="timestamp">18:27</div>
+				</div>
+			</div>
 
 			<!--------- START FOOTER CHAT MAIN ---------->
 			<div id="bottom-main">
-				<div class="inputBox">
+				<div class="input-container">
+					<div class="preview-imgs">
+						<div class="img-container">
+							<img
+								class="image"
+								src="../static/Gemini_Generated_Image_dlrfjxdlrfjxdlrf.jpg"
+								alt=""
+							/>
+							<i
+								class="image-close-btn fa-solid fa-xmark fa-2xs"
+							></i>
+						</div>
+						<p class="preview-document">document.pdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
+
+					</div>
 					<input
 						type="text"
 						id="messageInput"
 						placeholder="Enter your message"
 					/>
-					<button
-						type="button"
-						id="upload_widget"
-						class="btn btn-secondary pd-3 custom-file-upload"
-					>
-						Chọn tệp
-					</button>
-					<button
-						type="button"
-						id="send"
-						class="btn btn-primary pd-3"
-						onclick="sendMessage()"
-					>
-						Gửi
-					</button>
+					<div class="icon">
+						<i
+							id="upload_widget"
+							class="fa-solid fa-paperclip fa-rotate-by fa-sm font-awesome-file"
+							style="--fa-rotate-angle: -225deg"
+						></i>
+						<i
+							class="fa-regular fa-paper-plane font-awesome-send"
+							onclick="sendMessage()"
+						></i>
+					</div>
 				</div>
 			</div>
 		</div>
