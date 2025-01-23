@@ -12,9 +12,6 @@ import pytz
 import re
 
 
-# tự odonjg lod
-from livereload import Server
-
 load_dotenv()
 HOST = os.getenv('HOST')
 PORT = os.getenv('PORT')
@@ -35,7 +32,7 @@ def clearTerminar():
 
 def get_current_time_hcm():
     timezone = pytz.timezone('Asia/Ho_Chi_Minh')
-    return datetime.now(timezone).strftime("%d-%m-%Y, %H:%M:%S")
+    return datetime.now(timezone).strftime("%d-%m-%Y, %H:%M:%S (GMT +7)")
 
 
 @app.route('/', methods=['GET', 'HEAD'])
@@ -45,7 +42,7 @@ def home():
         return jsonify({'response_HEAD': "chào bot nhe!"}), 200
     else:
         try:
-            print("________________________________________________________")
+            print("_____________________________________________________________")
             print("- User accessed the website at:", get_current_time_hcm())
             user_agent_string = request.headers.get('User-Agent')
             user_agent = parse(user_agent_string)
@@ -57,13 +54,13 @@ def home():
 
             reset_globals()
             # clearTerminar()
-            return render_template('index1.html', content="Hello World!")
+            return render_template('index.html', content="Hello World!")
         except Exception as e:
             print("error parse user_agent", e)
 
             reset_globals()
             # clearTerminar()
-            return render_template('index1.html', content="Hello World!")
+            return render_template('index.html', content="Hello World!")
 
 # Stream the response to the client
 
@@ -72,7 +69,7 @@ def event_stream(response_text):
 
     print("Response:", response_text)
     words = response_text.split(' ')
-    print("word:", words)
+    # print("word:", words)
     for chunk in words:
         yield f"data: {json.dumps({'type': 'text', 'content': chunk + ' '})}\n\n"
         time.sleep(SPEED_GENERATE)  # sleep to slow down the real-time display
@@ -143,12 +140,12 @@ def receive_text_and_document():
 
 if __name__ == '__main__':
     print(f"Server is running on http://{HOST}:{PORT}",
-          time.strftime("%d-%m-%Y, %H:%M:%S"))
+          time.strftime("%d-%m-%Y, %H:%M:%S (GMT +7)"))
     # Production
-    # serve(app, host=HOST, port=PORT)
+    serve(app, host=HOST, port=PORT)
 
     # Development
-    app.run(debug=True, host=HOST, port=PORT)
+    # app.run(debug=True, host=HOST, port=PORT)
 
     # Development
     # server = Server(app.wsgi_app)

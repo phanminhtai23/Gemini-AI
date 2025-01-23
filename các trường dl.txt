@@ -32,7 +32,7 @@ b) Dạng bào chế;
 c) Thành phần, hàm lượng, khối lượng hoặc nồng độ của dược chất, dược liệu trong công thức thuốc;
 d) Quy cách đóng gói;
 đ) Chỉ định, cách dùng, chống chỉ định của thuốc;
-e) Số giấy đăng ký lưu hành hoặc số giấy phép nhập khẩu (nếu có);d
+e) Số giấy đăng ký lưu hành hoặc số giấy phép nhập khẩu (nếu có);
 g) Số lô sản xuất, ngày sản xuất, hạn dùng của thuốc, tiêu chuẩn chất lượng, điều kiện bảo quản thuốc;
 h) Các dấu hiệu lưu ý và khuyến cáo khi dùng thuốc;
 i) Tên cơ sở sản xuất thuốc, địa chỉ cơ sở sản xuất thuốc;
@@ -40,4 +40,108 @@ k) Tên, địa chỉ của cơ sở nhập khẩu (đối với thuốc nhập 
 l) Xuất xứ của thuốc.
 
 Đoạn văn bản sau là mô tả của một loại thuốc, hãy trích xuất dữ liệu trong đoạn sau thành dữ liệu json và trích theo các trường như sau:
-tên thuốc(tên đầy đủ của thuốc), dạng bào chế, thành phần(tìm hàm lượng, khối lượng hoặc nồng độ của dược chất, dược liệu trong công thức thuốc), quy cách đóng gói, chỉ định, cách dùng, chống chỉ định, hạn sử dụng, tiêu chuẩn chất lượng, điều kiện bảo quản, khuyến cáo, Tên cơ sở sản xuất thuốc, địa chỉ cơ sở sản xuất thuốc, tương tác thuốc(chứa các cặp dạng "Tên thuốc tương tác" và "vì sao, hậu quả là gì"), Hãy trả lời lại dữ liệu dạng JSON thôi nhé, sau đây là đoạn văn bản đó:
+TenThuoc(tên đầy đủ của thuốc)
+DangBaoChe (dạng bào chế của thuốc)
+ThanhPhan [
+{
+ThanhPhan(thành phần thuốc 1): ,
+HamLuong (Hàm lượng của thuốc 1): 
+}, 
+{
+ThanhPhan(thành phần thuốc 2): ,
+HamLuong (Hàm lượng của thuốc 2): 
+}, 
+] (là thành phần của thuốc và hàm lượng, khối lượng hoặc nồng độ của thành phần trong công thức thuốc)
+CachDongGoi (Cách đóng gói)
+ChiDinh (chỉ định, dành cho ai)
+ChongChiDinh (chống chỉ định)
+CachDung (cách dùng)
+HanSuDung (hạn sử dụng)
+TieuChuanChatLuong (tiêu chuẩn chất lượng của thuốc)
+DieuKienBaoQuan (điều kiện bảo quản của thuốc)
+KhuyenCao (khuyến cáo hay lưu ý của thuốc)
+CoSoSanXuatThuoc (là cơ sở sản xuất thuốc chứa object sau) {
+	TenCoSoSanXuatThuoc(Tên cơ sở sản xuất thuốc): ,
+	DiaChiCoSoSanXuatThuoc (Đại chỉ cơ sở sản xuất thuốc): 
+}
+TuongTacThuoc (là phần tương tác thuốc) [
+{
+	ThanhPhanTuongTac (thành phần trong thuốc hiện tại bị tương tác): ,
+	TenThuocTuongTac (tên loại thuốc mà tương tác với thành phần thuốc trên): ,
+	HauQua (hậu quả khi xảy ra khi 2 thành thuốc trên tương tác):
+},
+{
+	TenThuocTuongTac (tên loại thuốc mà thuốc hiện tại tương tác): ,
+	HauQua (hậu quả khi xảy ra khi thuốc hiện tại tương tác thuốc này):
+},
+...
+]
+XuatSuThuoc (Xuất sứ của thuốc)
+Hãy trả lời lại dữ liệu dạng JSON thôi nhé, trường nào không tìm thấy thì để nội dung trường đó là rỗng, sau đây là đoạn văn bản đó:
+
+Ví dụ:
+
+Ví dụ:
+{
+  "TenThuoc": "CIPOGIP 500",
+  "DangBaoChe": "Tablets (Viên nén bao phim)",
+  "ThanhPhan": [
+    {
+      "ThanhPhan": "Ciprofloxacin Hydrochlorid",
+      "HamLuong": "500mg"
+    },
+    {
+      "ThanhPhan": "Tinh bột ngô",
+      "HamLuong": ""
+    },
+    {
+      "ThanhPhan": "Cellulose vi tinh thể (Avicel PH 101)",
+      "HamLuong": ""
+    },
+    {
+      "ThanhPhan": "Natri starch glycolat",
+      "HamLuong": ""
+    },
+    {
+      "ThanhPhan": "Colloidal silicon dioxid (Aerosil 200)",
+      "HamLuong": ""
+    },
+    {
+      "ThanhPhan": "Magnesi stearat",
+      "HamLuong": ""
+    },
+    {
+      "ThanhPhan": "Propylen glycol",
+      "HamLuong": ""
+    },
+    {
+      "ThanhPhan": "Talc tinh chế",
+      "HamLuong": ""
+    },
+    {
+      "ThanhPhan": "Nước tinh khiết",
+      "HamLuong": "Bay hơi trong quá trình sản xuất"
+    }
+  ],
+  "CachDongGoi": "Hộp 2 vỉ x 10 viên",
+  "ChiDinh": "Dùng trong các trường hợp nhiễm khuẩn nặng do các vi khuẩn nhạy cảm như viêm phổi, nhiễm khuẩn tai giữa, nhiễm khuẩn tiết niệu, nhiễm khuẩn bụng, nhiễm khuẩn da và mô mềm.",
+  "ChongChiDinh": "Không sử dụng cho bệnh nhân mẫn cảm với Ciprofloxacin hoặc các thành phần khác trong thuốc.",
+  "CachDung": "Dùng đường uống theo sự chỉ dẫn của bác sĩ. Uống nhiều nước và tránh thuốc chống acid dạ dày trong vòng 2 giờ sau khi uống thuốc.",
+  "HanSuDung": "",
+  "TieuChuanChatLuong": "",
+  "DieuKienBaoQuan": "Để nơi khô ráo, tránh ánh sáng và nhiệt độ cao.",
+  "KhuyenCao": "Thuốc chỉ dùng theo đơn của bác sĩ. Đọc kỹ hướng dẫn sử dụng trước khi dùng. Để xa tầm tay trẻ em.",
+  "CoSoSanXuatThuoc": {
+    "TenCoSoSanXuatThuoc": "Incepta Pharmaceuticals Ltd.",
+    "DiaChiCoSoSanXuatThuoc": "Dewan Idris Road, Zirabo, Savar, Dhaka, Bangladesh"
+  },
+  "TuongTacThuoc": [
+    {
+      "ThanhPhanTuongTac": "Ciprofloxacin",
+      "TenThuocTuongTac": "",
+      "HauQua": "Có thể làm giảm hiệu quả của thuốc chống acid hoặc tăng độc tính khi dùng cùng các thuốc kháng sinh nhóm quinolon."
+    }
+  ],
+  "XuatSuThuoc": "Bangladesh"
+}
+_________

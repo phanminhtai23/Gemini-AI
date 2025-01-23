@@ -209,7 +209,7 @@ function fetchAPIGetTextAndDocument(formData) {
 // Function to initialize the SSE connection
 function initializeSSE(responseText) {
 
-	console.log(responseText);
+	// console.log(responseText);
 	const eventSource = new EventSource(
 		`/api/stream?text=${encodeURIComponent(responseText)}`,
 	);
@@ -230,12 +230,7 @@ function initializeSSE(responseText) {
 	eventSource.onmessage = function (event) {
 		const data = JSON.parse(event.data);
 		if (data.type === 'text') {
-			// console.log("content", data.content);
-			if (data.content == '\n\n' || data.content == '\n') {
-				messageText.textContent += '<br>';
-			} else {
-				messageText.textContent += data.content;
-			}
+			messageText.textContent += data.content;
 			scrollToBottom();
 			// receiveMessage(data.content);
 		} else if (data.type === 'end' || data.content === '') {

@@ -5,7 +5,6 @@ import os
 import httpx
 import base64
 import io
-import httpx
 import datetime
 from google.ai.generativelanguage_v1beta.types import content
 import requests
@@ -52,8 +51,6 @@ def reset_globals():
     images_general = []
 
 # API nhận text
-
-
 def generate_text(text):
     print("Client:", text)
 
@@ -269,7 +266,7 @@ def generate_document(text, filePath):
                 history_general.insert(-1,
                                        {"role": "model", "parts": response.text})
 
-                return response.text + " À mà, Document này dung lượng nhỏ nên tôi không nhớ được nội dung của nó đâu !! Tại đang dùng free nên chịu meow meow !!"
+                return response.text + "\nÀ mà, Document này dung lượng nhỏ nên tôi không nhớ được nội dung của nó đâu !! Tại đang dùng free nên chịu meow meow !!"
     except Exception as e:
         print(f"Error to generate document: {e}")
         return None
